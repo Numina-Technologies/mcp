@@ -61,7 +61,7 @@ job, using the Numina tools below and the other service's own connector.
 
 | Skill | What your AI does |
 | --- | --- |
-| [Gmail receipts](./skills/numina-gmail-receipts) | Finds receipts in Gmail and uploads them to Numina |
+| [Gmail receipts](./skills/numina-gmail-receipts) | Finds receipts in Gmail and gets them into Numina |
 | [Pleo](./skills/numina-pleo) | Drafts Pleo expenses with their receipts |
 | [Stripe](./skills/numina-stripe) | Drafts Stripe payouts against the bank, with sales, VAT and fees |
 | [Google Sheets](./skills/numina-google-sheets) | Puts your trial balance and key figures in a sheet |
