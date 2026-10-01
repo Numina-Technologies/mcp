@@ -1,7 +1,11 @@
-# Numina MCP
+# Numina MCP: AI bookkeeping and accounting with Claude and ChatGPT
 
-Bring your own AI to your books. Connect Claude, ChatGPT or any MCP client to
-your Numina ledger and let it read your accounts and do the bookkeeping.
+Bring your own AI to your books. The Numina MCP server connects Claude,
+ChatGPT, Cursor or any other MCP client to your accounting ledger, so your AI
+can answer questions about your numbers and do the bookkeeping.
+
+*Bogføring og regnskab med AI: forbind Claude eller ChatGPT til dit regnskab
+i Numina.*
 
 ## What you get
 
