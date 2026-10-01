@@ -8,37 +8,40 @@ description: Pull the trial balance and key figures from Numina into a Google Sh
 Needs **Google Sheets** and the **Numina MCP**
 ([setup](../../README.md#connect)). This skill only reads from Numina.
 
-## 1. Confirm the company and period
+## 1. Company and period
 
-- Call `get_company_info`. Confirm the company and pick an accounting year
-  from `accounting_years`.
-- Ask whether the user wants a new sheet or an existing one updated. If
-  updating, only touch tabs this skill created.
+- `get_company_info`: confirm the company and pick an accounting year from
+  `accounting_years` (default: the current one, up to today).
+- Ask whether to create a new sheet or update an existing one. When
+  updating, only touch the tabs this skill creates.
 
 ## 2. Fetch the figures
 
-- `get_trial_balance` for the closing balances at the period end.
-- `get_account_balances` (activity per period) for month-by-month
-  movements on revenue and expense accounts.
-- `list_accounts` to get account names, numbers and types.
+- `list_accounts`: numbers, names and account types.
+- `get_trial_balance` with `as_of` = the period end: balances on that date.
+- `get_account_balances` with `from`/`to` = the period, `granularity:
+  "month"` and `report: "profit_loss"`: movement per account per month.
+- Last year, if that accounting year exists: the same `get_account_balances`
+  call for the same months, and `get_trial_balance` one year before the
+  period end.
+
+Sign convention: negative = income/credit, positive = expense/debit. Flip
+income to positive in the sheet, and say so in a note.
 
 ## 3. Write the sheet
 
-Create these tabs:
-
 | Tab | Content |
 | --- | --- |
-| `Saldobalance` | Account no., name, type, closing balance |
-| `Måneder` | One row per account, one column per month |
-| `Nøgletal` | Revenue, gross profit, operating result, result before tax, bank balance |
+| `Saldobalance` | Account number, name, type, balance at the period end |
+| `Måneder` | One row per P&L account, one column per month, a total column |
+| `Nøgletal` | Revenue, gross profit, operating result, result before tax, and bank balance (the bank accounts in the trial balance); this year and last year side by side |
 
 Write numbers as numbers, not text, with two decimals. Put the company name,
-period and "Hentet fra Numina <date>" in the first row of each tab.
-
-Compute key figures with sheet formulas that reference the other tabs, so
-the user can see how each number is built.
+period and "Hentet fra Numina <date>" in the first row of each tab. Build
+`Nøgletal` with formulas referencing `Måneder`, so the user can see how each
+figure is made, and group accounts by their type from `list_accounts`.
 
 ## 4. Report back
 
-Link to the sheet and a two-line summary: result for the period and how it
-compares to the same period last year, if that year is available.
+A link to the sheet and two lines: the result for the period, and how it
+compares with the same period last year.

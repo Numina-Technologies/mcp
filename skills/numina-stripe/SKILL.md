@@ -7,46 +7,57 @@ description: Draft Stripe payouts in Numina against the bank line, split into sa
 
 Needs **Stripe** (payouts and balance transactions) and the **Numina MCP**
 with write access ([setup](../../README.md#connect)). One payout = one draft
-on the bank line it landed on. The user books the drafts in Numina.
+on the bank line it landed on. The user approves and books the drafts in
+Numina.
 
 ## 1. Company and period
 
 `get_company_info`: confirm the company and check `scopes` includes
 `write:draft`. If not, ask the user to reconnect Numina.
 
-## 2. Accounts
+## 2. Accounts, once
 
-`list_accounts` and `list_vat_codes` once. Identify sales account(s), the
-output VAT code, an EU-sale code without Danish VAT, and the fees account.
-Ask when unsure.
+`list_accounts` and `list_vat_codes`. Identify the sales account(s), the
+Danish output VAT code, the code for EU sales without Danish VAT, the fees
+account and the receivables (debtor) account. Ask when unsure.
 
 ## 3. Each payout
 
 1. **Find the bank line.** `search_bank_transactions` with `text: "stripe"`,
-   the payout amount and `state: "unreconciled"`. Skip lines with
-   `agent_processing: true`; Numina is already on them. No line yet → the
-   payout hasn't arrived; skip it.
-2. **Bank account.** `get_bank_transaction` gives the bank's ledger account.
-3. **Split the payout** from its Stripe balance transactions:
-   - Denmark → Danish output VAT code
-   - EU business with VAT number → EU sale, no Danish VAT
-   - EU consumer → OSS if the user is registered, otherwise Danish VAT; ask
-   - outside the EU → no VAT
-4. **`create_draft`** with `bank_transaction_id` and lines that sum to 0:
-   - bank account: the payout, **positive**
-   - sales per VAT group: **negative**, gross with Danish VAT codes
-   - refunds: **positive** on the same sales accounts and codes
-   - fees: **positive** on the fees account (Stripe fees are usually
-     VAT-exempt; follow the code the company already uses)
+   `amount_min` = `amount_max` = the payout amount (positive, money in) and
+   `state: "unreconciled"`. Each result has the bank's
+   `ledger_account_number`. Skip lines with `agent_processing: true`;
+   Numina is already on them. No line → the payout hasn't arrived yet; skip
+   it.
+2. **List what's in the payout** from its Stripe balance transactions. Use
+   their settlement amounts (`amount`, `fee`): they're already in the payout
+   currency.
+3. **Group the charges:**
+   - **paying an invoice already issued in Numina** (check `list_invoices`):
+     not new sales. They go to the receivables account so the revenue isn't
+     counted twice.
+   - **Denmark** → Danish output VAT code
+   - **EU business with a VAT number** → EU sale, no Danish VAT
+   - **EU consumer** → OSS if the company is registered for it, otherwise
+     Danish VAT; ask the user
+   - **outside the EU** → no VAT
+4. **`create_draft`** with `bank_transaction_id`, `date` = the payout date,
+   and lines that sum to 0:
+   - bank account (`ledger_account_number`): the payout, **positive**
+   - sales per group: **negative**, gross with a Danish VAT code
+   - invoice payments: **negative** on the receivables account
+   - refunds: **positive**, on the same accounts and codes as the sale
+   - fees: **positive** on the fees account. Stripe's fees are usually
+     VAT-exempt; follow the code the company already uses for them.
 
-   Payout in EUR → `currency: "EUR"` and the bank's DKK amount as
-   `amount_dkk` on the bank line.
+   Payout in another currency (e.g. a EUR bank account)? Set `currency`;
+   Numina converts at the day's rate.
 5. If `create_draft` refuses because the lines don't balance, recheck the
-   split rather than plugging the difference.
+   grouping. Never plug the difference.
 
 `reasoning` example: "Stripe payout po_123: 42 charges, 1 refund, fees."
 
 ## 4. Report back
 
-Per payout: amount, sales, VAT, refunds, fees, and the draft link. Remind
-the user to approve the drafts in Numina.
+Per payout: amount, sales per VAT group, invoice payments, refunds, fees and
+a link to the draft. Remind the user to approve the drafts in Numina.
