@@ -4,11 +4,14 @@ Let Claude, ChatGPT or any other AI assistant work with your books.
 
 ## What is Numina?
 
-[Numina](https://numina.app) is accounting software and a bookkeeper in one,
-for freelancers and consultants in Denmark. Connect your bank and
-send your receipts; AI does the bookkeeping, and Numina's bookkeepers check
-it. Numina is approved by the Danish Business Authority (Erhvervsstyrelsen)
-as a digital bookkeeping system.
+[Numina](https://numina.app) is AI accounting software for Danish companies.
+Connect your bank and send in your receipts, and Numina's AI agent drafts the
+bookkeeping and matches bank lines to receipts and invoices. Numina also
+handles invoices, quotes and subscriptions, VAT returns, EU sales reporting,
+financial reports and the annual report.
+
+Numina is approved by the Danish Business Authority (Erhvervsstyrelsen) as a
+digital bookkeeping system.
 
 ## What is this repo?
 
@@ -75,9 +78,6 @@ job, using the Numina tools below and the other service's own connector.
   or the chat.
 
 Then ask, for example: *"Run the Gmail receipts skill for last month."*
-
-Rather not run it yourself? With Numina's full service, Numina connects
-these for you and its bookkeepers handle the work.
 
 ## Tools
 
