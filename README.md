@@ -1,36 +1,31 @@
 # Numina MCP
 
-Let Claude, ChatGPT or any other AI assistant work with your books.
+Bring your own AI to your books. Connect Claude, ChatGPT or any MCP client to
+your Numina ledger and let it read your accounts and do the bookkeeping.
 
-## What is Numina?
+## What you get
 
-[Numina](https://numina.app) is AI accounting software for Danish companies.
-Connect your bank and send in your receipts, and Numina's AI agent drafts the
-bookkeeping and matches bank lines to receipts and invoices. Numina also
-handles invoices, quotes and subscriptions, VAT returns, EU sales reporting,
-financial reports and the annual report.
+[Numina](https://numina.app) is a Danish accounting system: ledger, bank
+reconciliation, invoicing, VAT returns and reports, approved by the Danish
+Business Authority (Erhvervsstyrelsen). The Numina MCP server opens that
+ledger to the AI assistant you already use:
 
-Numina is approved by the Danish Business Authority (Erhvervsstyrelsen) as a
-digital bookkeeping system.
+- **Ask anything about your numbers.** "What did we spend on software this
+  year?", "Which invoices are overdue?", "Show the trial balance for Q3."
+- **Let it do the work.** Draft expenses, match bank lines, create contacts
+  and upload receipts.
+- **Stay in control.** Your AI only writes drafts. Nothing is booked until you
+  approve it in Numina, and every change shows who made it and why.
 
-## What is this repo?
+MCP (Model Context Protocol) is the open standard AI assistants use to connect
+to other services, so the same server works with Claude, ChatGPT, Cursor and
+others.
 
-Numina has an **MCP server**. MCP (Model Context Protocol) is the open
-standard AI assistants use to connect to other services. Once you connect
-Numina, your assistant can:
+This repo has the setup steps, a reference of the tools, and **skills**:
+step-by-step instructions your AI follows for a whole job, like booking last
+month's Pleo expenses.
 
-- **answer questions** about your business: "What did we spend on software
-  this year?", "Which invoices are overdue?"
-- **do bookkeeping work**: draft expenses, match bank lines, upload receipts.
-
-This repo holds what you need to get started: setup steps, **skills**
-(step-by-step instructions your AI follows for a whole job, like booking last
-month's Pleo expenses) and examples.
-
-Your AI only ever writes **drafts**. Nothing is booked until a person approves
-it in Numina.
-
-New to Numina? Create an account at [numina.app](https://numina.app) first.
+No Numina account yet? Create one at [numina.app](https://numina.app).
 
 ## Connect
 
