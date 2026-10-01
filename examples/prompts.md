@@ -18,3 +18,8 @@ Connect the Numina MCP first, then ask:
 **Close and VAT**
 - Show the trial balance at the end of the last quarter.
 - How much output and input VAT did we have last quarter?
+
+**Bookkeeping** (drafts only, you approve them in Numina)
+- Go through last week's unreconciled bank lines and draft them.
+- Attach this receipt to the Staples payment and fix the VAT code.
+- What's still sitting unbooked in my drafts?

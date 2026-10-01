@@ -1,50 +1,52 @@
 ---
 name: numina-stripe
-description: Book Stripe payouts, fees, refunds and VAT in Numina as draft journal entries. Use when the user asks to book, sync or reconcile their Stripe revenue.
+description: Draft Stripe payouts in Numina against the bank line, split into sales, VAT, refunds and fees. Use when the user asks to book, sync or reconcile their Stripe revenue.
 ---
 
 # Stripe → Numina
 
-You need two connections ([setup](../../README.md#connect)): **Stripe** (read balance transactions and payouts)
-and the **Numina MCP with write access** (create draft journal entries).
+Needs **Stripe** (payouts and balance transactions) and the **Numina MCP**
+with write access ([setup](../../README.md#connect)). One payout = one draft
+on the bank line it landed on. The user books the drafts in Numina.
 
-## 1. Confirm the company and period
+## 1. Company and period
 
-- Call `get_company_info` and check that `scopes` includes write access.
-  If it is read-only, stop and tell the user to reconnect with write access.
-- Agree on a period. Work payout by payout: each Stripe payout becomes one
-  draft entry that matches the amount landing in the bank.
+`get_company_info`: confirm the company and check `scopes` includes
+`write:draft`. If not, ask the user to reconnect Numina.
 
-## 2. Load the chart of accounts once
+## 2. Accounts
 
-`list_accounts` and `list_vat_codes`. Identify:
+`list_accounts` and `list_vat_codes` once. Identify sales account(s), the
+output VAT code, an EU-sale code without Danish VAT, and the fees account.
+Ask when unsure.
 
-- Stripe clearing account (ask if there is none)
-- Sales account(s) and output VAT
-- Payment fees account
-- Bank account the payouts land in
+## 3. Each payout
 
-## 3. For each payout
-
-1. Skip it if `search_ledger_entries` already finds the payout ID or the
-   same date and amount on the bank account.
-2. List the balance transactions in the payout (charges, refunds, fees,
-   adjustments).
-3. Split sales by VAT treatment using the customer's country and whether
-   the customer is a business with a VAT number:
-   - Denmark → 25 % Danish VAT
-   - EU business with VAT number → reverse charge, no Danish VAT
+1. **Find the bank line.** `search_bank_transactions` with `text: "stripe"`,
+   the payout amount and `state: "unreconciled"`. Skip lines with
+   `agent_processing: true`; Numina is already on them. No line yet → the
+   payout hasn't arrived; skip it.
+2. **Bank account.** `get_bank_transaction` gives the bank's ledger account.
+3. **Split the payout** from its Stripe balance transactions:
+   - Denmark → Danish output VAT code
+   - EU business with VAT number → EU sale, no Danish VAT
    - EU consumer → OSS if the user is registered, otherwise Danish VAT; ask
-   - Outside the EU → no VAT
-4. Create a **draft** journal entry:
-   - credit sales (net) and output VAT per group
-   - debit refunds against the same accounts
-   - debit fees (Stripe processing fees are usually VAT-exempt; follow the VAT code the company already uses for them)
-   - debit the Stripe clearing account with the payout amount
-5. Check that the draft balances and that the payout amount equals what hit
-   the bank (`search_ledger_entries` on the bank account). Flag mismatches.
+   - outside the EU → no VAT
+4. **`create_draft`** with `bank_transaction_id` and lines that sum to 0:
+   - bank account: the payout, **positive**
+   - sales per VAT group: **negative**, gross with Danish VAT codes
+   - refunds: **positive** on the same sales accounts and codes
+   - fees: **positive** on the fees account (Stripe fees are usually
+     VAT-exempt; follow the code the company already uses)
+
+   Payout in EUR → `currency: "EUR"` and the bank's DKK amount as
+   `amount_dkk` on the bank line.
+5. If `create_draft` refuses because the lines don't balance, recheck the
+   split rather than plugging the difference.
+
+`reasoning` example: "Stripe payout po_123: 42 charges, 1 refund, fees."
 
 ## 4. Report back
 
-Per payout: amount, sales, VAT, fees, refunds, and whether it matched the
-bank. Remind the user that drafts must be approved in Numina.
+Per payout: amount, sales, VAT, refunds, fees, and the draft link. Remind
+the user to approve the drafts in Numina.

@@ -1,7 +1,9 @@
-# Clients without OAuth
+# Setup with an API key
 
-Create an API key in Numina under **Integrationer → API forbindelser → Opret API-nøgle** with the
-`read:ledger` scope. Keys start with `numi_` and are shown once.
+For clients without OAuth, or scripts. In Numina, go to
+**Integrationer → Claude & AI-assistenter → Forbind**. That creates a key
+with read and draft-write access and shows ready-to-paste setup. Keys start
+with `numi_` and are shown once.
 
 ## Claude Code
 
@@ -9,6 +11,12 @@ Create an API key in Numina under **Integrationer → API forbindelser → Opret
 claude mcp add --transport http numina https://api.numina.app/mcp \
   --header "Authorization: Bearer numi_..."
 ```
+
+## Claude (claude.ai / Desktop)
+
+Settings → Connectors → Add custom connector, URL
+`https://api.numina.app/mcp`, and under Advanced settings a header
+`Authorization` with the value `Bearer numi_...`.
 
 ## JSON config (Cursor, VS Code and others)
 

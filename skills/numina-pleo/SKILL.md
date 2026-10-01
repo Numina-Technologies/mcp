@@ -1,48 +1,54 @@
 ---
 name: numina-pleo
-description: Book Pleo card expenses and reimbursements in Numina as draft journal entries with the receipt attached. Use when the user asks to book, sync or reconcile Pleo expenses.
+description: Draft Pleo card expenses and reimbursements in Numina with their receipts. Use when the user asks to book, sync or reconcile Pleo expenses.
 ---
 
 # Pleo → Numina
 
-You need two connections ([setup](../../README.md#connect)): **Pleo** (read expenses and receipts) and the
-**Numina MCP with write access** (create draft journal entries and attach
-documents).
+Needs **Pleo** (expenses and receipts) and the **Numina MCP** with write
+access ([setup](../../README.md#connect)). You create drafts; the user
+books them in Numina.
 
-## 1. Confirm the company and period
+## 1. Company and period
 
-- Call `get_company_info` and check that `scopes` includes write access.
-  If it is read-only, stop and tell the user to reconnect with write access.
-- Agree on a period. Default: expenses settled last calendar month.
+`get_company_info`: confirm the company and check `scopes` includes
+`write:draft`. If not, ask the user to reconnect Numina. Default period:
+expenses settled last calendar month.
 
-## 2. Load the chart of accounts once
+## 2. Accounts
 
-- `list_accounts` and `list_vat_codes`. Find the Pleo clearing/bank account
-  (often named "Pleo"). If there is none, ask the user which account Pleo
-  card spend runs through.
+`list_accounts` and `list_vat_codes` once. Find the Pleo account (often named
+"Pleo"); ask if there is none. Out-of-pocket expenses (udlæg) go to the
+employee's payable account instead.
 
-## 3. For each Pleo expense
+## 3. Each expense
 
-1. Skip it if `search_ledger_entries` already finds an entry with the same
-   Pleo reference, or the same date, amount and supplier.
-2. Pick the expense account from the Pleo category and the supplier. Look at
-   how the same supplier was booked before (`search_ledger_entries`) and
-   reuse that account and VAT code.
-3. VAT: Danish suppliers with a valid receipt → deductible VAT per the VAT
-   code. Foreign SaaS → reverse charge (EU/non-EU services). Meals and
-   entertainment → 25 % of the VAT. When unsure, pick no deduction and flag
-   it.
-4. Create a **draft** journal entry: expense account (net), VAT account (if
-   any), credit the Pleo account (gross). Date = transaction date. Text =
-   supplier + Pleo note.
-5. Attach the Pleo receipt to the draft. No receipt → still create the
-   draft and flag "missing receipt".
+1. **Duplicate?** `search_ledger_entries` (`status: "both"`) on the Pleo
+   account for the same date and amount. Skip matches.
+2. **Supplier.** `search_contacts`; if missing, `create_contact` with
+   `roles: ["supplier"]` and only the details you actually know.
+3. **Account and VAT.** Look at how this supplier was booked before
+   (`search_ledger_entries` with its name) and reuse that. Otherwise pick
+   from the Pleo category. Danish receipt → the deductible VAT code; foreign
+   SaaS → reverse charge; restaurant → the representation code. Unsure of
+   the account → leave `account_number` out so the line stays unfinished.
+4. **`create_draft`**: date, text = supplier + Pleo note, `contact_id`, and
+   two lines:
+   - expense: account, `vat_code`, **positive** amount (gross for Danish
+     VAT codes, net for reverse charge)
+   - Pleo account: the same amount, **negative**, no VAT code
 
-Out-of-pocket expenses (udlæg) credit the employee's payable account, not
-the Pleo account.
+   Foreign currency: set `currency` and `amount_dkk` to what Pleo charged in
+   DKK.
+5. **Receipt.** `create_upload_link` with the draft's `transaction_id`,
+   upload it, then `set_document_ocr`. No receipt → `update_draft` with
+   `review_note: "Mangler bilag"`.
+
+Give every write a one-line `reasoning`, e.g. "Pleo: Adobe subscription,
+same account as previous Adobe charges."
 
 ## 4. Report back
 
-Totals per account, a list of flagged items (missing receipt, unsure VAT,
-unsure account), and remind the user that drafts must be approved in Numina
-before they are booked.
+Totals per account, and a list of drafts that need a look: missing receipt,
+unsure VAT, unfinished account. Remind the user to approve the drafts in
+Numina.

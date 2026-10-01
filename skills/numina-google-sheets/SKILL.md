@@ -5,8 +5,8 @@ description: Pull the trial balance and key figures from Numina into a Google Sh
 
 # Numina → Google Sheets
 
-You need two connections ([setup](../../README.md#connect)): **Google Sheets** (create and write spreadsheets)
-and the **Numina MCP**. Everything on the Numina side is read-only.
+Needs **Google Sheets** and the **Numina MCP**
+([setup](../../README.md#connect)). This skill only reads from Numina.
 
 ## 1. Confirm the company and period
 
