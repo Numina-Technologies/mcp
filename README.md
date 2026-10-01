@@ -1,17 +1,37 @@
 # Numina MCP
 
-Connect Claude, ChatGPT or any MCP client to your [Numina](https://numina.app)
-bookkeeping. Ask about your numbers, and let your own AI do the bookkeeping
-work with ready-made skills.
+Let Claude, ChatGPT or any other AI assistant work with your books.
 
-```
-https://api.numina.app/mcp
-```
+## What is Numina?
 
-Your AI can read your books and write **drafts**. It can never book anything:
-a person approves every draft in Numina.
+[Numina](https://numina.app) is accounting software and a bookkeeper in one,
+for freelancers and consultants in Denmark. Connect your bank and
+send your receipts; AI does the bookkeeping, and Numina's bookkeepers check
+it. Numina is approved by the Danish Business Authority (Erhvervsstyrelsen)
+as a digital bookkeeping system.
+
+## What is this repo?
+
+Numina has an **MCP server**. MCP (Model Context Protocol) is the open
+standard AI assistants use to connect to other services. Once you connect
+Numina, your assistant can:
+
+- **answer questions** about your business: "What did we spend on software
+  this year?", "Which invoices are overdue?"
+- **do bookkeeping work**: draft expenses, match bank lines, upload receipts.
+
+This repo holds what you need to get started: setup steps, **skills**
+(step-by-step instructions your AI follows for a whole job, like booking last
+month's Pleo expenses) and examples.
+
+Your AI only ever writes **drafts**. Nothing is booked until a person approves
+it in Numina.
+
+New to Numina? Create an account at [numina.app](https://numina.app) first.
 
 ## Connect
+
+The server address is `https://api.numina.app/mcp`.
 
 **Claude (claude.ai / Desktop)**
 Settings → Connectors → Add custom connector → paste the URL → Connect.
@@ -38,7 +58,8 @@ Integrationer → API forbindelser.
 
 ## Skills
 
-Step-by-step instructions your AI follows to do a bookkeeping job end to end.
+Each skill is a `SKILL.md` file that walks your AI through one bookkeeping
+job, using the Numina tools below and the other service's own connector.
 
 | Skill | What your AI does |
 | --- | --- |
@@ -55,7 +76,8 @@ Step-by-step instructions your AI follows to do a bookkeeping job end to end.
 
 Then ask, for example: *"Run the Gmail receipts skill for last month."*
 
-Rather not run it yourself? Numina's full service does all of this for you.
+Rather not run it yourself? With Numina's full service, Numina connects
+these for you and its bookkeepers handle the work.
 
 ## Tools
 
