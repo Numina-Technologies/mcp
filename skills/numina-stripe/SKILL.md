@@ -18,8 +18,8 @@ Numina.
 ## 2. Accounts, once
 
 `list_accounts` and `list_vat_codes`. Identify the sales account(s), the
-Danish output VAT code, the code for EU sales without Danish VAT, the fees
-account and the receivables (debtor) account. Ask when unsure.
+Danish output VAT code, the code for EU sales without Danish VAT and the
+fees account. Ask when unsure.
 
 ## 3. Each payout
 
@@ -33,9 +33,6 @@ account and the receivables (debtor) account. Ask when unsure.
    their settlement amounts (`amount`, `fee`): they're already in the payout
    currency.
 3. **Group the charges:**
-   - **paying an invoice already issued in Numina** (check `list_invoices`):
-     not new sales. They go to the receivables account so the revenue isn't
-     counted twice.
    - **Denmark** → Danish output VAT code
    - **EU business with a VAT number** → EU sale, no Danish VAT
    - **EU consumer** → OSS if the company is registered for it, otherwise
@@ -45,7 +42,6 @@ account and the receivables (debtor) account. Ask when unsure.
    and lines that sum to 0:
    - bank account (`ledger_account_number`): the payout, **positive**
    - sales per group: **negative**, gross with a Danish VAT code
-   - invoice payments: **negative** on the receivables account
    - refunds: **positive**, on the same accounts and codes as the sale
    - fees: **positive** on the fees account. Stripe's fees are usually
      VAT-exempt; follow the code the company already uses for them.
@@ -59,5 +55,5 @@ account and the receivables (debtor) account. Ask when unsure.
 
 ## 4. Report back
 
-Per payout: amount, sales per VAT group, invoice payments, refunds, fees and
+Per payout: amount, sales per VAT group, refunds, fees and
 a link to the draft. Remind the user to approve the drafts in Numina.
