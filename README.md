@@ -69,6 +69,9 @@ job, using the Numina tools below and the other service's own connector.
 | [Pleo](./skills/numina-pleo) | Drafts Pleo expenses with their receipts |
 | [Stripe](./skills/numina-stripe) | Drafts Stripe payouts against the bank, with sales, VAT and fees |
 | [Google Sheets](./skills/numina-google-sheets) | Puts your trial balance and key figures in a sheet |
+| [Move from e-conomic](./skills/numina-migrate-economic) | Carries your e-conomic balances over as Numina's opening balance |
+| [Move from Billy](./skills/numina-migrate-billy) | Carries your Billy balances over as Numina's opening balance |
+| [Move from Dinero](./skills/numina-migrate-dinero) | Carries your Dinero balances over as Numina's opening balance |
 
 **Install**
 - Claude: upload the skill folder under Settings → Capabilities → Skills,
