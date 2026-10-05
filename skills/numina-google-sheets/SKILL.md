@@ -18,9 +18,9 @@ Needs **Google Sheets** and the **Numina MCP**
 ## 2. Fetch the figures
 
 - `list_accounts`: numbers, names and account types.
-- `get_trial_balance` with `as_of` = the period end: balances on that date.
+- `get_trial_balance` with `date` = the period end: balances on that date.
 - `get_account_balances` with `from`/`to` = the period, `granularity:
-  "month"` and `report: "profit_loss"`: movement per account per month.
+  "month"` and `statement: "profit_loss"`: movement per account per month.
 - Last year, if that accounting year exists: the same `get_account_balances`
   call for the same months, and `get_trial_balance` one year before the
   period end.
