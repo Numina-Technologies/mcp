@@ -54,8 +54,7 @@ create a connector with the URL above and sign in to Numina.
 **Other clients (Cursor, VS Code, …)**
 Use an API key, see [`examples/clients.md`](./examples/clients.md).
 
-Connected before October 2026? Disconnect and connect again to give your AI
-write access. You can revoke access any time in Numina under
+You can revoke access any time in Numina under
 Integrationer → API forbindelser.
 
 ## Skills
