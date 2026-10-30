@@ -91,6 +91,7 @@ Then ask, for example: *"Run the Gmail receipts skill for last month."*
 | `get_account_balances` | Net movement per account per period |
 | `get_trial_balance` | Balances on a date |
 | `search_ledger_entries`, `get_transaction` | Booked and draft transactions |
+| `list_booked_entries` | Every posted entry in a period, with VAT code and bilag number, up to 1000 per call |
 | `search_bank_transactions`, `get_bank_transaction` | Bank lines and whether they're reconciled |
 | `get_bank_balances` | Last-synced bank balances |
 | `list_invoices`, `get_invoice` | Sales invoices |
