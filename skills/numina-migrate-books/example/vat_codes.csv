@@ -1,0 +1,3 @@
+code,name,rate,vat_type,account_number,calculation_basis,std_vat_code,source_file
+U25,Salgsmoms 25%,25,sales_dk,6900,gross,S1,kontoplan.csv
+I25,Købsmoms 25%,25,purchase_tax,6901,gross,K1,kontoplan.csv

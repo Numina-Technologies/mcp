@@ -1,0 +1,7 @@
+voucher_ref,voucher_number,contact_ref,source_file,file_name,type,date
+V-OPEN,88,V1,posteringer.csv,,,
+B1,101,V1,posteringer.csv,,,
+B-7,7,,posteringer.csv,,,2024-05-01
+INV-1,1,C1,posteringer.csv,,sales_invoice,2023-12-15
+INV-2,2,C1,posteringer.csv,,sales_invoice,2024-03-01
+CN-3,3,C1,posteringer.csv,,sales_credit_note,2024-04-01
