@@ -14,6 +14,8 @@ in Numina. Nothing is imported before that approval.
 Only want the balances carried over? Use the opening-balance skills instead
 ([e-conomic](../numina-migrate-economic), [Billy](../numina-migrate-billy),
 [Dinero](../numina-migrate-dinero)). They are quicker and need no files.
+Never do both for one company: if an opening-balance draft is already
+waiting in Numina, the user deletes it instead of booking it.
 
 You need:
 

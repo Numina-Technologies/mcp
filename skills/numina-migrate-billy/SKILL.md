@@ -1,6 +1,6 @@
 ---
 name: numina-migrate-billy
-description: Move from Billy to Numina by writing the opening balance (åbningsbalance) from Billy's trial balance as a draft in Numina. Use when the user is switching from Billy and wants their balances carried over.
+description: Carry only the balances from Billy to Numina, by writing the opening balance (åbningsbalance) from Billy's trial balance as a draft in Numina. Use when the user is switching from Billy and wants just their balances carried over. For the whole history (postings, invoices, contacts) use numina-migrate-books instead.
 ---
 
 # Billy → Numina: opening balance
@@ -9,6 +9,11 @@ Moves the **balances** from Billy to Numina, not the full history. You
 read Billy's trial balance (saldobalance) on the last day before the
 company starts in Numina, and write it as one opening-balance draft. The
 user checks it and books it in Numina.
+
+Want the old postings, invoices and contacts in Numina too? That is
+[Move your whole history](../numina-migrate-books), which brings the
+balances with it. If the user has not said which they want, ask. Never do
+both for one company: the balances would be in Numina twice.
 
 Needs the **Numina MCP** with write access ([setup](../../README.md#connect))
 and Billy's trial balance, from one of these:
@@ -30,6 +35,9 @@ accounts and postings up to that date instead.
 3. Check there's no opening balance already: `search_ledger_entries` with
    `status: "both"`, `date_from` = `date_to` = the opening date. If you find
    one, stop and ask the user.
+4. Check the history is not being moved: `get_migration`. If it returns a
+   migration, stop and ask the user. A full migration carries the balances
+   itself.
 
 ## 2. Read the trial balance
 
