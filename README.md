@@ -69,7 +69,7 @@ job, using the Numina tools below and the other service's own connector.
 | [Stripe](./skills/numina-stripe) | Drafts Stripe payouts against the bank, with sales, VAT and fees |
 | [Google Sheets](./skills/numina-google-sheets) | Puts your trial balance and key figures in a sheet |
 | [Move your whole history](./skills/numina-migrate-books) | Moves every year's postings, invoices and contacts from Dinero, Billy, e-conomic or another system |
-| [Move from e-conomic](./skills/numina-migrate-economic) | Carries your e-conomic balances over as Numina's opening balance |
+| [Move from e-conomic](./skills/numina-migrate-economic) | Carries your e-conomic balances over as Numina's opening balance. Also holds the e-conomic API notes for moving the whole history |
 | [Move from Billy](./skills/numina-migrate-billy) | Carries your Billy balances over as Numina's opening balance |
 | [Move from Dinero](./skills/numina-migrate-dinero) | Carries your Dinero balances over as Numina's opening balance |
 

@@ -24,8 +24,10 @@ You need:
 - An AI that can **run code and make HTTP requests** (Claude Code, Claude
   Desktop or Cursor with a shell). The data goes to Numina as one zip
   file, not through the chat.
-- The old books: export files, or API access to the old system (see
-  [e-conomic through its API](#e-conomic-through-its-api)).
+- The old books: export files, or API access to the old system. For
+  e-conomic through its API, install the
+  [e-conomic skill](../numina-migrate-economic) too and read its
+  [whole-history.md](../numina-migrate-economic/whole-history.md).
 
 A company migrates **once**. The approved import is final, so one proposal
 holds every year the user wants moved.
@@ -207,37 +209,6 @@ bilag under its old number. After the user has approved the import:
 2. For each file, `create_upload_link` with that `attachment_id`, then POST
    the file. A bilag that already has a file is refused, so a retry never
    adds it twice.
-
-## e-conomic through its API
-
-If your AI already has e-conomic API access, you need no export files. Read
-from the REST API (`restapi.e-conomic.com`), 1,000 rows per page, and write
-the same tables:
-
-| Read | Becomes |
-| --- | --- |
-| `/accounting-years` | `fiscal_years` in the manifest |
-| `/accounts` | `accounts.csv`, with headings and sum accounts |
-| `/vat-accounts` | `vat_codes.csv` |
-| `/customers`, `/suppliers` | `contacts.csv` |
-| `/accounting-years/{year}/entries` | `transactions.csv` and `postings.csv` |
-| `/invoices/booked` | sales invoices in `vouchers.csv` |
-
-Look at a page of each before you write the script; do not assume field
-names. What to know:
-
-- An entry is one posting line. Lines with the same `voucherNumber` in the
-  same accounting year are one transaction. A voucher number is only
-  unique within its year, so make `transaction_ref` from year and number.
-- Entries **without** a `voucherNumber` are the year's opening balances:
-  they become that year's `primo`, and the year before is closed.
-- `amount` is in the entry's currency and `amountInBaseCurrency` in DKK.
-  Keep both.
-- A trial balance you compute from the same entries proves nothing. Ask
-  the user for e-conomic's own Saldobalance report at each year end as a
-  file, or tell them the figures are unchecked.
-- Save what you fetched to files and run the script on those, so a rerun
-  does not fetch everything again.
 
 ## Rules
 

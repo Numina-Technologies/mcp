@@ -12,8 +12,10 @@ user checks it and books it in Numina.
 
 Want the old postings, invoices and contacts in Numina too? That is
 [Move your whole history](../numina-migrate-books), which brings the
-balances with it. If the user has not said which they want, ask. Never do
-both for one company: the balances would be in Numina twice.
+balances with it. With e-conomic API access it needs no export files:
+see [whole-history.md](./whole-history.md). If the user has not said
+which they want, ask. Never do both for one company: the balances would
+be in Numina twice.
 
 Needs the **Numina MCP** with write access ([setup](../../README.md#connect))
 and e-conomic's trial balance, from one of these:
