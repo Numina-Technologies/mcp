@@ -103,9 +103,10 @@ What matters most:
   the Numina code that means the same in `numina_vat_codes` (from the
   guide) and take its `vat_type`, `std_vat_code`, `calculation_basis`,
   `counter_vat_type` and `supplementary_type`. The `code` itself stays the
-  old system's code or name. `std_vat_code` must be one of Numina's or
-  empty; anything else is refused. Tell the user about a code you cannot
-  match.
+  old system's code or name. Copy `std_vat_code` from that Numina code too,
+  or leave it empty; never make one up. With Numina's chart, a code whose
+  `std_vat_code` matches none of the company's is refused. Tell the user
+  about a code you cannot match.
 - **Old numbers survive**: `voucher_number` is the old bilag number, and a
   sales invoice keeps its invoice number (`type` `sales_invoice`).
 - **Payments name what they pay**: the payment keeps its own bilag on the
@@ -125,7 +126,10 @@ What matters most:
   itself, and the user closes the years in Numina afterwards. Never build
   a `primo` from the trial balance.
 
-Zip the files flat (no folder inside the zip).
+Zip the tables flat (no folder inside the zip), and nothing else. The zip
+may be 10 MB and its tables 50 MB unpacked, which is far more than a small
+company's books. If yours is larger, tell the user to migrate in the Numina
+app instead.
 
 ## 5. Upload and validate
 
@@ -136,8 +140,7 @@ Zip the files flat (no folder inside the zip).
    grouped by code with the file, line and column; `get_migration_preview`
    section `issues` with a `code` lists them all.
 4. Read the **warnings**. Some are normal: `unused_account` for the unused
-   accounts of a kept chart, `voucher_without_file` for a voucher with no file
-   among those that have. Others mean the script is wrong or the user must know:
+   accounts of a kept chart. Others mean the script is wrong or the user must know:
    `unlinked_payment` (an invoice will show unpaid) and `vat_unmapped` (a
    VAT code with no `std_vat_code`; see the rule above).
 
@@ -179,13 +182,9 @@ them on that page first.
 
 ## Vouchers (bilag)
 
-Small sets go in the zip: put the files in `files/`, name each in
-`vouchers.file_name` and set `scope.vouchers` true. The zip may be up to
-100 MB.
-
-With more than that, leave the files out but keep the voucher rows. Each is
-imported as an empty bilag under its old number. After the user has
-approved the import:
+Voucher files never go in the zip. Keep the voucher rows, with
+`file_name` empty and `scope.vouchers` false: each is imported as an empty
+bilag under its old number. After the user has approved the import:
 
 1. `list_booked_entries` gives each entry's `attachment_id` and bilag
    number.
