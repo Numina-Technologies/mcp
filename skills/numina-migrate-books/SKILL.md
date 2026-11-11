@@ -103,16 +103,21 @@ What matters most:
   the Numina code that means the same in `numina_vat_codes` (from the
   guide) and take its `vat_type`, `std_vat_code`, `calculation_basis`,
   `counter_vat_type` and `supplementary_type`. The `code` itself stays the
-  old system's code or name. Tell the user about a code you cannot match.
+  old system's code or name. `std_vat_code` must be one of Numina's or
+  empty; anything else is refused. Tell the user about a code you cannot
+  match.
 - **Old numbers survive**: `voucher_number` is the old bilag number, and a
   sales invoice keeps its invoice number (`type` `sales_invoice`).
 - **Payments name what they pay**: the payment keeps its own bilag on the
   transaction, and its debtor or creditor line goes on the voucher of the
   invoice it settles (`voucher_ref` on the posting). Whatever stays
   unlinked shows as unpaid in Numina.
-- **Contacts come from the old system's list.** Without one, a name the
-  posting text states for an invoice or bill may become a name-only
-  contact; tell the user. Never invent CVR numbers or addresses.
+- **Contacts come only from the old system's own contact data**: its
+  customer and supplier list, or contact fields on the rows. Never make a
+  contact from a name in a posting text. Without contact data, leave
+  `contact_ref` empty and tell the user: old invoices then sit under one
+  contact named after the old system, and they can add the list before
+  approving.
 - **A year is closed only when the old system opened the next one** with
   its balances. Those opening postings become that year's `primo`. Where
   the old system books no opening postings (Dinero's posting list), every
@@ -134,7 +139,7 @@ Zip the files flat (no folder inside the zip).
    accounts of a kept chart, `voucher_without_file` for a voucher with no file
    among those that have. Others mean the script is wrong or the user must know:
    `unlinked_payment` (an invoice will show unpaid) and `vat_unmapped` (a
-   VAT code without settings; see the rule above, never fill in a guess).
+   VAT code with no `std_vat_code`; see the rule above).
 
 ## 6. Check it against the old system
 
