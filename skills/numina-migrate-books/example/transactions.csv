@@ -1,0 +1,7 @@
+transaction_ref,date,text,kind,source_file,voucher_ref,contact_ref,source_row
+P0,2024-01-01,Primo,primo,posteringer.csv,,,2
+T1,2024-03-01,Faktura 2,regular,posteringer.csv,INV-2,C1,3
+T2,2024-04-01,Kreditnota 3,regular,posteringer.csv,CN-3,C1,4
+T3,2024-05-01,Betaling faktura 1,regular,posteringer.csv,,C1,5
+P1,2025-01-01,Primo 2025,primo,posteringer.csv,,,6
+T4,2025-02-01,Køb,regular,posteringer.csv,B1,V1,7

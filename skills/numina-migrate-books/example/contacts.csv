@@ -1,0 +1,3 @@
+contact_ref,name,is_customer,is_vendor,cvr,email,phone,source_file
+C1,Kunde ApS,true,false,12345678,faktura@kunde.dk,+45 12 34 56 78,kontakter.csv
+V1,Leverandør A/S,false,true,,,,kontakter.csv

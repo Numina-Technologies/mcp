@@ -1,0 +1,10 @@
+account_number,name,account_type,account_category,default_vat_code,source_file,system_account_type,is_liquidity_account
+1000,Salg,profitAndLoss,income,U25,kontoplan.csv,,
+2000,Varekøb,profitAndLoss,expenses,I25,kontoplan.csv,,
+5600,Bank,status,assets,,kontoplan.csv,bank,true
+5800,Debitorer,status,assets,,kontoplan.csv,debtors,
+6800,Kreditorer,status,liabilities,,kontoplan.csv,creditors,
+6900,Salgsmoms,status,liabilities,,kontoplan.csv,sales_vat,
+6901,Købsmoms,status,liabilities,,kontoplan.csv,purchase_vat,
+7000,Overført resultat,status,equity,,kontoplan.csv,retained_earnings,
+7100,Selskabskapital,status,equity,,kontoplan.csv,,

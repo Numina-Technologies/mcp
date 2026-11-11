@@ -68,6 +68,7 @@ job, using the Numina tools below and the other service's own connector.
 | [Pleo](./skills/numina-pleo) | Drafts Pleo expenses with their receipts |
 | [Stripe](./skills/numina-stripe) | Drafts Stripe payouts against the bank, with sales, VAT and fees |
 | [Google Sheets](./skills/numina-google-sheets) | Puts your trial balance and key figures in a sheet |
+| [Move your whole history](./skills/numina-migrate-books) | Moves every year's postings, invoices and contacts from Dinero, Billy, e-conomic or another system |
 | [Move from e-conomic](./skills/numina-migrate-economic) | Carries your e-conomic balances over as Numina's opening balance |
 | [Move from Billy](./skills/numina-migrate-billy) | Carries your Billy balances over as Numina's opening balance |
 | [Move from Dinero](./skills/numina-migrate-dinero) | Carries your Dinero balances over as Numina's opening balance |
@@ -108,6 +109,19 @@ Then ask, for example: *"Run the Gmail receipts skill for last month."*
 | `create_contact`, `update_contact` | Suppliers and customers |
 | `create_upload_link`, `set_document_ocr` | Upload a receipt and record what it says |
 | `resolve_review` | Close a review once it's fixed |
+
+**Move the books** (company administrators; nothing is imported until you approve it in Numina)
+
+| Tool | What it does |
+| --- | --- |
+| `get_migration_guide` | The migration format, the rules and where the old system's exports are |
+| `start_migration`, `get_migration`, `discard_migration` | Open the company's migration, read its state, or start over |
+| `create_migration_upload_link` | A link to upload the migration as one zip file |
+| `validate_migration` | Errors, warnings and the check against the old trial balance |
+| `get_migration_preview` | What will be imported: balances, unpaid invoices, every posting |
+
+`create_upload_link` also takes an `attachment_id`, to give an empty bilag
+its file after a migration.
 
 Lines are signed (positive = debit, negative = credit) and must balance to 0.
 Danish VAT codes take the gross amount, reverse-charge codes the net amount.
