@@ -72,9 +72,12 @@ One question decides the shape of the migration, and it is the user's:
   say that when you ask. Include all accounts, also unused ones, headings
   and sum accounts. A heading without a number in the old system gets a
   free number just before the first account under it.
-- **Use Numina's chart** (`list_accounts`, `list_vat_codes`): standard
-  reports and VAT setup. You map each old account to the closest Numina
-  account by meaning, not by number, in `account_map.csv`.
+- **Use Numina's chart** (`list_accounts`): standard reports and VAT
+  setup. You map each old account to the closest Numina account by
+  meaning, not by number, in `account_map.csv`. An old account with a role
+  (debtors, creditors, retained earnings, VAT settlement) goes onto the
+  Numina account with that role: `numina_system_accounts` in the guide
+  says which they are. Do not pick by a similar name.
 
 A company that already books in Numina can only use Numina's chart.
 
@@ -87,7 +90,15 @@ decimals (`1.250,50`), `dd-mm-yyyy` and Windows-1252.
 
 [`example/`](./example) is a small complete migration that validates: a
 kept chart with headings, an opening balance, a sales invoice with VAT, a
-credit note, a payment, a year end and a purchase. Use it for the shape; `tables` in the guide has every
+credit note, a payment, a year end and a purchase.
+[`example-numina-chart/`](./example-numina-chart) holds the two files that
+change when the same books go onto Numina's chart: the manifest and
+`account_map.csv`.
+
+Whichever chart is chosen, **everything stays in the old system's terms**:
+`accounts.csv` is the old chart, and postings, VAT code accounts and
+`system_account_type` use the old account numbers. Only `account_map.csv`
+points into Numina. Use it for the shape; `tables` in the guide has every
 column.
 
 What matters most:
@@ -115,7 +126,9 @@ What matters most:
   unlinked shows as unpaid in Numina.
 - **Contacts come only from the old system's own contact data**: its
   customer and supplier list, or contact fields on the rows. Never make a
-  contact from a name in a posting text. Without contact data, leave
+  contact from a name in a posting text. You may link a row to a contact
+  from that list when its text names the contact exactly; a near match is
+  no match. Without contact data, leave
   `contact_ref` empty and tell the user: old invoices then sit under one
   contact named after the old system, and they can add the list before
   approving.
@@ -139,8 +152,8 @@ app instead.
 3. Fix every **error** in the script, rebuild, upload again. Errors come
    grouped by code with the file, line and column; `get_migration_preview`
    section `issues` with a `code` lists them all.
-4. Read the **warnings**. Some are normal: `unused_account` for the unused
-   accounts of a kept chart. Others mean the script is wrong or the user must know:
+4. Read the **warnings**. Some are normal: `unused_account` for old
+   accounts without postings. Others mean the script is wrong or the user must know:
    `unlinked_payment` (an invoice will show unpaid) and `vat_unmapped` (a
    VAT code with no `std_vat_code`; see the rule above).
 
@@ -150,9 +163,9 @@ Before you say it is ready, compare with the source using
 `get_migration_preview`:
 
 - `reconciliation`: must be empty when a trial balance was given.
-- `closing_balances`: the bank, debtor and creditor balances on the last
-  day you moved should be the ones the old system shows for that day.
-  Accounts at zero are left out.
+- `closing_balances`: the bank, debtor and creditor balances at the last
+  posting should be the ones the old system shows for that day. They are
+  listed under the old account numbers, and accounts at zero are left out.
 - `open_items`: the unpaid invoices and bills. Compare with the old
   system's own list if the user gave you one; otherwise show the user the
   list and ask whether it looks right. An invoice they know is paid means

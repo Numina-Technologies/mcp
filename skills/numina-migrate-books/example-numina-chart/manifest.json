@@ -1,0 +1,27 @@
+{
+  "format_version": 1,
+  "source_system": "Example",
+  "chart": {
+    "mode": "numina",
+    "template": "company_std"
+  },
+  "scope": {
+    "opening_balance": true,
+    "open_items": true,
+    "history": true,
+    "vouchers": false
+  },
+  "fiscal_years": [
+    {
+      "start": "2024-01-01",
+      "end": "2024-12-31",
+      "closed": true
+    },
+    {
+      "start": "2025-01-01",
+      "end": "2025-12-31",
+      "closed": false
+    }
+  ],
+  "opening_date": "2024-01-01"
+}

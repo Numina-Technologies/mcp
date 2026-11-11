@@ -1,0 +1,10 @@
+source_account_number,target_account_number,reason
+1000,1010,Sales with VAT
+2000,1310,Purchases with VAT
+5600,5820,The bank account
+5800,5600,Debtors: Numina's account with the debtors role
+6800,6800,Creditors: Numina's account with the creditors role
+6900,6902,Sales VAT
+6901,6903,Purchase VAT
+7000,6130,Retained earnings: Numina's account with that role
+7100,6110,Share capital
