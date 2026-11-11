@@ -140,7 +140,7 @@ What matters most:
   a `primo` from the trial balance.
 
 Zip the tables flat (no folder inside the zip), and nothing else. The zip
-may be 10 MB and its tables 50 MB unpacked, which is far more than a small
+may be 10 MB and its tables 20 MB unpacked, which is far more than a small
 company's books. If yours is larger, tell the user to migrate in the Numina
 app instead.
 
@@ -148,7 +148,8 @@ app instead.
 
 1. `create_migration_upload_link`, then PUT the zip to `upload_url` (the
    result has a `curl` line). Ask for a new link for every upload.
-2. `validate_migration`.
+2. `validate_migration`. A large upload answers `validating`: wait a few
+   seconds and call `get_migration` until `validated_at` has changed.
 3. Fix every **error** in the script, rebuild, upload again. Errors come
    grouped by code with the file, line and column; `get_migration_preview`
    section `issues` with a `code` lists them all.
