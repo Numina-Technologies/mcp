@@ -96,8 +96,9 @@ Then ask, for example: *"Run the Gmail receipts skill for last month."*
 | `list_booked_entries` | Every posted entry in a period, with VAT code and bilag number, up to 1000 per call |
 | `search_bank_transactions`, `get_bank_transaction` | Bank lines and whether they're reconciled |
 | `get_bank_balances` | Last-synced bank balances |
-| `list_invoices`, `get_invoice` | Sales invoices |
+| `list_invoices`, `get_invoice` | Sales invoices, credit notes and offers |
 | `search_contacts`, `get_contact` | Customers and suppliers |
+| `list_products`, `get_product` | The product catalogue used on invoice lines |
 | `search_documents`, `get_document` | Receipts and other source documents |
 
 **Write** (drafts only, nothing is booked)
@@ -108,8 +109,18 @@ Then ask, for example: *"Run the Gmail receipts skill for last month."*
 | `reconcile_bank_transaction`, `unlink_bank_transaction` | Match a bank line to a draft, or undo it |
 | `propose_booked_change` | Suggest a correction to a booked transaction |
 | `create_contact`, `update_contact` | Suppliers and customers |
+| `create_product`, `update_product` | Products in the invoice catalogue |
 | `create_upload_link`, `set_document_ocr` | Upload a receipt and record what it says |
 | `resolve_review` | Close a review once it's fixed |
+
+**Offers** (quotes, with the `invoices:write` scope; nothing is booked or emailed to the customer)
+
+| Tool | What it does |
+| --- | --- |
+| `create_offer` | An offer with lines like an invoice's; with `issue: true` it gets its offer number |
+| `issue_offer` | Give a draft offer its number and mark it sent |
+| `set_offer_outcome` | Record that the customer accepted or declined |
+| `convert_offer_to_invoice` | Turn an accepted offer into an invoice draft; calling it again returns the same draft |
 
 **Move the books** (company administrators; nothing is imported until you approve it in Numina)
 
