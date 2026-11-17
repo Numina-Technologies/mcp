@@ -20,6 +20,9 @@ Settings → Connectors → Add custom connector, URL
 
 ## JSON config (Cursor, VS Code and others)
 
+In VS Code, put this in `.mcp.json` at the workspace root or in
+`~/.copilot/mcp-config.json`, not `.vscode/mcp.json`.
+
 ```json
 {
   "mcpServers": {
@@ -32,4 +35,5 @@ Settings → Connectors → Add custom connector, URL
 }
 ```
 
-Keep the key out of version control.
+Keep the key out of version control. In VS Code, `"Bearer ${NUMINA_API_KEY}"`
+reads it from an environment variable instead.
