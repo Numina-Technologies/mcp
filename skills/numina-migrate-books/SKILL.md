@@ -202,13 +202,21 @@ them on that page first.
 
 Voucher files never go in the zip. Keep the voucher rows, with
 `file_name` empty and `scope.vouchers` false: each is imported as an empty
-bilag under its old number. After the user has approved the import:
+bilag under its old number, and a sales invoice as a Numina invoice without
+its PDF. After the user has approved the import:
 
-1. `list_booked_entries` gives each entry's `attachment_id` and bilag
-   number.
-2. For each file, `create_upload_link` with that `attachment_id`, then POST
-   the file. A bilag that already has a file is refused, so a retry never
-   adds it twice.
+1. `list_missing_attachment_files` lists both, oldest first: bilag with
+   their number, accounting year and the posting's date, text and amount;
+   invoices with their number, customer, date and total. Follow
+   `next_offset` while `has_more`.
+2. Match each to one of the user's files by those details. Leave out what
+   you cannot match with confidence and tell the user.
+3. For each file, `create_attachment_file_upload_link` with the bilag's
+   `attachment_id` or the invoice's `invoice_id` (a PDF), then POST the file.
+   A document that already has its file is refused, so a retry never
+   replaces it.
+
+This also works for a company that was imported earlier without its files.
 
 ## Rules
 
