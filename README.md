@@ -131,9 +131,8 @@ Then ask, for example: *"Run the Gmail receipts skill for last month."*
 | `create_migration_upload_link` | A link to upload the migration as one zip file |
 | `validate_migration` | Errors, warnings and the check against the old trial balance |
 | `get_migration_preview` | What will be imported: balances, unpaid invoices, every posting |
-
-`create_upload_link` also takes an `attachment_id`, to give an empty bilag
-its file after a migration.
+| `list_missing_attachment_files` | Imported bilag and invoices whose file did not come along, with what to match the files by |
+| `create_attachment_file_upload_link` | A link to upload one of those files: a bilag's, or an invoice's PDF |
 
 Lines are signed (positive = debit, negative = credit) and must balance to 0.
 Danish VAT codes take the gross amount, reverse-charge codes the net amount.
