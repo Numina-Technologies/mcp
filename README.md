@@ -97,6 +97,7 @@ Then ask, for example: *"Run the Gmail receipts skill for last month."*
 | `search_bank_transactions`, `get_bank_transaction` | Bank lines and whether they're reconciled |
 | `get_bank_balances` | Last-synced bank balances |
 | `list_invoices`, `get_invoice` | Sales invoices, credit notes and offers |
+| `list_invoice_files` | The files emailed with an invoice or offer after its PDF |
 | `search_contacts`, `get_contact` | Customers and suppliers |
 | `list_products`, `get_product` | The product catalogue used on invoice lines |
 | `search_documents`, `get_document` | Receipts and other source documents |
@@ -113,7 +114,7 @@ Then ask, for example: *"Run the Gmail receipts skill for last month."*
 | `create_upload_link`, `set_document_ocr` | Upload a receipt and record what it says |
 | `resolve_review` | Close a review once it's fixed |
 
-**Offers** (quotes, with the `invoices:write` scope; nothing is booked or emailed to the customer)
+**Offers and invoice drafts** (with the `invoices:write` scope; nothing is booked or emailed to the customer)
 
 | Tool | What it does |
 | --- | --- |
@@ -121,6 +122,12 @@ Then ask, for example: *"Run the Gmail receipts skill for last month."*
 | `issue_offer` | Give a draft offer its number and mark it sent |
 | `set_offer_outcome` | Record that the customer accepted or declined |
 | `convert_offer_to_invoice` | Turn an accepted offer into an invoice draft; calling it again returns the same draft |
+| `create_invoice`, `delete_invoice` | Make an invoice draft, or delete one made by mistake |
+| `create_invoice_file_upload_link` | A link to upload a file the customer gets with an invoice or offer draft, such as a timesheet |
+| `delete_invoice_file` | Remove a file from an invoice or offer draft |
+
+A file on an invoice is emailed after its PDF; e-invoices don't carry it, and it isn't a bilag.
+PDF, PNG or JPEG, up to 10 files and 10 MB per invoice, and only while the invoice is a draft.
 
 **Move the books** (company administrators; nothing is imported until you approve it in Numina)
 
