@@ -110,7 +110,8 @@ Then ask, for example: *"Run the Gmail receipts skill for last month."*
 | `reconcile_bank_transaction`, `unlink_bank_transaction` | Match a bank line to a draft, or undo it |
 | `propose_booked_change` | Suggest a correction to a booked transaction |
 | `create_contact`, `update_contact` | Suppliers and customers |
-| `create_product`, `update_product` | Products in the invoice catalogue |
+| `delete_contact` | Delete a contact nothing refers to, such as one made by mistake; one with invoices, entries or documents is refused |
+| `create_product`, `update_product`, `delete_product` | Products in the invoice catalogue |
 | `create_upload_link`, `set_document_ocr` | Upload a receipt and record what it says |
 | `resolve_review` | Close a review once it's fixed |
 
