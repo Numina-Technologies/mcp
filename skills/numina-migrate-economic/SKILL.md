@@ -30,8 +30,10 @@ entries endpoints instead.
 
 ## 1. Company and start date
 
-1. `get_company_info`: confirm the company and check `scopes` includes
-   `write:draft`. If not, ask the user to reconnect Numina.
+1. `get_company_info`: confirm the company. Check that `create_draft` is
+   among your Numina tools: Numina only lists the tools the connection may
+   use. If it's missing, the connection is read-only; ask the user to
+   reconnect Numina with write access.
 2. The opening date is the `start_date` of the **earliest** year in
    `accounting_years`. Confirm it with the user. The trial balance you need
    from e-conomic is the one for the day before.

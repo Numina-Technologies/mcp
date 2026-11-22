@@ -11,9 +11,11 @@ approves and books them in Numina.
 
 ## 1. Company and period
 
-`get_company_info`: confirm the company and check `scopes` includes
-`write:draft`. If not, ask the user to reconnect Numina. Default period:
-expenses settled last calendar month.
+`get_company_info`: confirm the company. Check that `create_draft`,
+`create_contact` and `create_upload_link` are among your Numina tools:
+Numina only lists the tools the connection may use. If one is missing, ask
+the user to reconnect Numina with write access. Default period: expenses
+settled last calendar month.
 
 ## 2. Accounts, once
 
@@ -26,16 +28,26 @@ Top-ups from the bank to Pleo are transfers, not expenses. Leave them out.
 
 ## 3. Each expense
 
-1. **Already in Numina?** `search_ledger_entries` with `status: "both"`,
-   `account_number` = the Pleo account, `date_from` and `date_to` = the
-   expense date, and `signed_amount_min` = `signed_amount_max` = minus the
-   DKK amount (the Pleo line is a credit). A hit means skip.
+1. **Already in Numina?** `search_ledger_entries` with `status: "both"`
+   and `text_search` = the Pleo expense ID. Step 4 writes that ID into the
+   line text, so a hit is this expense: skip it.
+
+   No hit can still be an expense booked before the ID was written, or by
+   hand. Search again with `status: "both"`, `date_from` and `date_to` =
+   the expense date, `signed_amount_min` = `signed_amount_max` = minus the
+   DKK amount (the credit line), and `account_number` = the Pleo account,
+   or the employee payable account for an udlæg. If a hit has no Pleo
+   expense ID in its line text and names the same supplier (in its text or
+   `contact_id`), don't draft the expense: list it in the report as
+   "possibly already booked" and let the user decide. A hit with another
+   expense's ID is a different purchase of the same amount: carry on.
 2. **Supplier.** `search_contacts` by name. If there's no match,
    `create_contact` with `roles: ["supplier"]` and only details you actually
    know.
 3. **Account and VAT.** See how this supplier was booked before
-   (`search_ledger_entries` with `text_search` = the supplier) and reuse that
-   account and VAT code. Otherwise choose from the Pleo category:
+   (`search_ledger_entries` with `text_search` = the supplier; it matches
+   line text only, which is why step 4 puts the supplier there) and reuse
+   that account and VAT code. Otherwise choose from the Pleo category:
    - Danish receipt → the company's deductible purchase VAT code
    - foreign service (e.g. SaaS) → the reverse-charge code for EU or
      non-EU services
@@ -52,9 +64,13 @@ Top-ups from the bank to Pleo are transfers, not expenses. Leave them out.
    - Pleo account (or employee payable for udlæg), the same amount,
      **negative**, no VAT code
 
+   Give both lines the same `text`: the supplier, then the full Pleo
+   expense ID, as "Adobe · Pleo <expense ID>". Steps 1 and 3 search for it.
+
    Paid in another currency? Set `currency` to it, use amounts in that
-   currency, and put Pleo's DKK amount on each line as `amount_dkk` (with
-   the expense line's sign) so the draft matches what Pleo charged.
+   currency, and put Pleo's DKK amount on each line as `amount_dkk`, with
+   that line's own sign (positive on the expense line, negative on the
+   other), so the draft matches what Pleo charged.
 5. **Receipt.** If you can run shell commands: `create_upload_link` with
    the draft's `transaction_id`, upload the receipt with the returned `curl`,
    then `set_document_ocr` with what it says. If you can't, or there's no
@@ -65,5 +81,6 @@ same account as earlier Adobe charges."
 
 ## 4. Report back
 
-Totals per account, and the drafts that need a look: missing receipt, unsure
-VAT, unfinished account. Remind the user to approve the drafts in Numina.
+Totals per account, the drafts that need a look (missing receipt, unsure
+VAT, unfinished account), and the expenses left out as possibly already
+booked. Remind the user to approve the drafts in Numina.
